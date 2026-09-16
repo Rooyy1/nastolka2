@@ -1,46 +1,58 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f2f3f5">
-  <meta name="description" content="Попробуйте настольную бизнес-игру в браузере: бросайте кубик, двигайтесь по полю и открывайте карточки с бизнес-ситуациями.">
+  <meta name="description"
+    content="Попробуйте настольную бизнес-игру в браузере: бросайте кубик, двигайтесь по полю и открывайте карточки с бизнес-ситуациями.">
   <title>Бизнес-игра — интерактивное демо</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231b1e22'/%3E%3Ccircle cx='10' cy='10' r='3' fill='%23f36a64'/%3E%3Ccircle cx='22' cy='10' r='3' fill='%2356a8ef'/%3E%3Ccircle cx='10' cy='22' r='3' fill='%2350ad83'/%3E%3Ccircle cx='22' cy='22' r='3' fill='%23e8bc43'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231b1e22'/%3E%3Ccircle cx='10' cy='10' r='3' fill='%23f36a64'/%3E%3Ccircle cx='22' cy='10' r='3' fill='%2356a8ef'/%3E%3Ccircle cx='10' cy='22' r='3' fill='%2350ad83'/%3E%3Ccircle cx='22' cy='22' r='3' fill='%23e8bc43'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
   <script src="cards.js" defer></script>
   <script src="game-engine.js" defer></script>
   <script src="app.js" defer></script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="./" aria-label="Бизнес-игра — на начало">
       <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
       <span>Бизнес-игра<span class="brand-caption">ИГРОВОЙ СТОЛ</span></span>
     </a>
-    <span class="demo-badge">Демо-версия</span>
-    <nav class="header-actions" aria-label="Управление игрой">
-      <button class="text-button" id="rules-button" type="button"><span class="circle-help" aria-hidden="true">?</span>Как играть</button>
-      <button class="text-button reset-button" id="reset-button" type="button"><span aria-hidden="true">↻</span><span>Начать заново</span></button>
-    </nav>
   </header>
 
   <main class="main">
     <div class="table-heading">
-      <div><h1>Ваш игровой стол</h1><p>Бросьте кубик — фишка приведёт вас к новой ситуации.</p></div>
+      <div>
+        <h1>Ваш игровой стол</h1>
+        <p>Бросьте кубик — фишка приведёт вас к новой ситуации.</p>
+      </div>
     </div>
 
     <div class="game-layout">
       <section class="board-section" aria-label="Игровое поле">
-        <div class="section-heading"><h2>Игровое поле</h2><span class="position-label" id="position-label">На старте</span></div>
+        <div class="section-heading">
+          <h2>Игровое поле</h2><span class="position-label" id="position-label">На старте</span>
+        </div>
         <div class="board-frame">
           <div class="board" id="board" aria-label="Замкнутое поле из 22 клеток; движение по часовой стрелке">
             <ol id="board-cells" class="board-cells" aria-label="Клетки игрового поля"></ol>
             <div class="board-center">
-              <div class="turn-label"><span class="player-dot red" aria-hidden="true"></span>Ваш ход <span class="turn-counter" id="turn-counter">01</span></div>
-              <div class="center-copy"><h2 id="center-title">Сделайте первый ход</h2><p id="center-subtitle">Ваша фишка — красная.<br>Посмотрим, что выпадет?</p></div>
-              <div class="die" id="die" role="img" aria-label="Кубик, готов к броску"><div class="die-pips" id="die-pips" aria-hidden="true"></div></div>
-              <button class="roll-button" id="roll-button" type="button"><span class="roll-symbol" aria-hidden="true">⠿</span><span id="roll-button-text">Бросить кубик</span><span aria-hidden="true">↗</span></button>
+              <div class="turn-label"><span class="player-dot red" aria-hidden="true"></span>Ваш ход <span
+                  class="turn-counter" id="turn-counter">01</span></div>
+              <div class="center-copy">
+                <h2 id="center-title">Сделайте первый ход</h2>
+                <p id="center-subtitle">Ваша фишка — красная.<br>Посмотрим, что выпадет?</p>
+              </div>
+              <div class="die" id="die" role="img" aria-label="Кубик, готов к броску">
+                <div class="die-pips" id="die-pips" aria-hidden="true"></div>
+              </div>
+              <button class="roll-button" id="roll-button" type="button"><span class="roll-symbol"
+                  aria-hidden="true">⠿</span><span id="roll-button-text">Бросить кубик</span><span
+                  aria-hidden="true">↗</span></button>
               <p class="roll-status" id="roll-status" role="status" aria-live="polite">Нажмите, чтобы начать</p>
               <span class="center-mark" aria-hidden="true">БИЗНЕС / ИГРА</span>
             </div>
@@ -48,48 +60,72 @@
           </div>
         </div>
         <div class="players-bar" aria-label="Фишки игроков">
-          <div class="player active"><span class="player-dot red" aria-hidden="true">1</span><span>Вы<strong>Ваша фишка</strong></span></div>
-          <div class="player"><span class="player-dot blue" aria-hidden="true">2</span><span>Игрок 2<strong>Демо</strong></span></div>
-          <div class="player"><span class="player-dot green" aria-hidden="true">3</span><span>Игрок 3<strong>Демо</strong></span></div>
-          <div class="player"><span class="player-dot yellow" aria-hidden="true">4</span><span>Игрок 4<strong>Демо</strong></span></div>
+          <div class="player active"><span class="player-dot red" aria-hidden="true">1</span><span>Вы<strong>Ваша
+                фишка</strong></span></div>
+          <div class="player"><span class="player-dot blue" aria-hidden="true">2</span><span>Игрок
+              2<strong>Демо</strong></span></div>
+          <div class="player"><span class="player-dot green" aria-hidden="true">3</span><span>Игрок
+              3<strong>Демо</strong></span></div>
+          <div class="player"><span class="player-dot yellow" aria-hidden="true">4</span><span>Игрок
+              4<strong>Демо</strong></span></div>
         </div>
       </section>
 
       <section class="decks-section" aria-labelledby="decks-heading">
-        <div class="section-heading"><h2 id="decks-heading">Карточки игры</h2><span>Выберите стопку</span></div>
+        <div class="section-heading">
+          <h2 id="decks-heading">Карточки игры</h2><span>Выберите стопку</span>
+        </div>
         <div class="decks-grid" id="decks-grid"></div>
-        <div class="deck-note"><span class="note-icon" aria-hidden="true">↗</span><p>У каждой клетки своя история.<br><strong>Откройте карточку и попробуйте решить задачу.</strong></p></div>
       </section>
     </div>
-
-    <footer class="game-footer"><p>Бросок кубика <span aria-hidden="true">→</span> Движение фишки <span aria-hidden="true">→</span> Новая карточка</p><span>Тестовые карточки · свободная игра</span></footer>
   </main>
 
-  <dialog id="card-dialog" class="card-dialog" aria-labelledby="card-title" aria-describedby="card-body">
+  <dialog id="card-dialog" class="card-dialog" aria-describedby="card-body">
     <div class="card-banner"><span id="card-deck-label"></span><span id="card-counter"></span></div>
     <button class="close-button" id="close-card" aria-label="Закрыть карточку" type="button">×</button>
     <div class="card-content">
       <div class="card-type-icon" id="card-type-icon" aria-hidden="true"></div>
-      <p class="eyebrow" id="card-origin">КАРТОЧКА ИЗ СТОПКИ</p>
-      <h2 id="card-title"></h2><p class="card-body" id="card-body"></p>
-      <div class="card-question"><span>ВАШЕ РЕШЕНИЕ</span><p id="card-question"></p></div>
-      <div class="card-actions"><button class="next-card-button" id="next-card" type="button">Ещё карточка <span aria-hidden="true">↗</span></button><button class="continue-button" id="continue-button" type="button">Вернуться на поле</button></div>
-      <p class="sample-note">Тестовая ситуация для демо. Обсудите ответ вслух.</p>
+      <p class="card-body" id="card-body"></p>
+      <div class="card-actions"><button class="next-card-button" id="next-card" type="button">Ещё карточка <span
+            aria-hidden="true">↗</span></button><button class="continue-button" id="continue-button"
+          type="button">Вернуться на поле</button></div>
     </div>
   </dialog>
 
   <dialog id="rules-dialog" class="rules-dialog" aria-labelledby="rules-title">
     <button class="close-button" id="close-rules" aria-label="Закрыть правила" type="button">×</button>
-    <p class="eyebrow">ЗНАКОМСТВО С ИГРОЙ</p><h2 id="rules-title">Один ход — новая ситуация.</h2>
+    <p class="eyebrow">ЗНАКОМСТВО С ИГРОЙ</p>
+    <h2 id="rules-title">Один ход — новая ситуация.</h2>
     <ol class="rules-list">
-      <li><span>01</span><div><h3>Бросьте кубик</h3><p>Выпадет число от 1 до 6. Вы управляете красной фишкой.</p></div></li>
-      <li><span>02</span><div><h3>Пройдите по полю</h3><p>Фишка переместится по часовой стрелке на выпавшее число клеток.</p></div></li>
-      <li><span>03</span><div><h3>Откройте ситуацию</h3><p>Карточка нужной категории появится сама. Подумайте над ответом, закройте её и сделайте следующий ход.</p></div></li>
+      <li><span>01</span>
+        <div>
+          <h3>Бросьте кубик</h3>
+          <p>Выпадет число от 1 до 6. Вы управляете красной фишкой.</p>
+        </div>
+      </li>
+      <li><span>02</span>
+        <div>
+          <h3>Пройдите по полю</h3>
+          <p>Фишка переместится по часовой стрелке на выпавшее число клеток.</p>
+        </div>
+      </li>
+      <li><span>03</span>
+        <div>
+          <h3>Откройте ситуацию</h3>
+          <p>Карточка нужной категории появится сама. Подумайте над ответом, закройте её и сделайте следующий ход.</p>
+        </div>
+      </li>
     </ol>
-    <div class="rules-note">Любую стопку можно открыть самостоятельно. В демо нет победителей и подсчёта баллов — пробуйте сколько угодно. Другие фишки показывают будущий формат игры; голосовой чат и совместная игра появятся на следующем этапе.</div>
-    <button class="continue-button full-width" id="start-playing" type="button">Понятно, играем <span aria-hidden="true">↗</span></button>
+    <div class="rules-note">Любую стопку можно открыть самостоятельно. В демо нет победителей и подсчёта баллов —
+      пробуйте сколько угодно. Другие фишки показывают будущий формат игры; голосовой чат и совместная игра появятся на
+      следующем этапе.</div>
+    <button class="continue-button full-width" id="start-playing" type="button">Понятно, играем <span
+        aria-hidden="true">↗</span></button>
   </dialog>
 
-  <noscript><div class="noscript-note">Для броска кубика и открытия карточек включите JavaScript в браузере.</div></noscript>
+  <noscript>
+    <div class="noscript-note">Для броска кубика и открытия карточек включите JavaScript в браузере.</div>
+  </noscript>
 </body>
+
 </html>

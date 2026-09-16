@@ -15,7 +15,6 @@
     { color: 'green', name: 'Игрок 3 — демонстрационная фишка', position: 11 },
     { color: 'yellow', name: 'Игрок 4 — демонстрационная фишка', position: 16 }
   ];
-  // Простые пиктограммы категорий служат навигацией по полю и стопкам.
   const shapes = {
     start: '<path d="M5 20V4m0 1h12l-3 4 3 4H5"/>',
     case: '<rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V4h6v3M4 12c5 3 11 3 16 0M10 13h4"/>',
@@ -78,7 +77,7 @@
       button.dataset.deck = deck.id;
       button.style.setProperty('--deck-color', deck.color);
       button.setAttribute('aria-label', 'Открыть стопку «' + deck.title + ' — ' + deck.subtitle + '»');
-      button.innerHTML = '<span class="deck-top"><span>' + String(index + 1).padStart(2, '0') + '</span><span class="deck-arrow" aria-hidden="true">↗</span></span><span class="deck-icon">' + icon(deck.icon) + '</span><span class="deck-title"></span><span class="deck-subtitle"></span><span class="deck-bottom"><span>Карточек: ' + deck.cards.length + '</span><span class="deck-small-mark" aria-hidden="true">Б / И</span></span>';
+      button.innerHTML = '<span class="deck-top"><span>' + String(index + 1).padStart(2, '0') + '</span><span class="deck-arrow" aria-hidden="true">↗</span></span><span class="deck-icon">' + icon(deck.icon) + '</span><span class="deck-title"></span><span class="deck-subtitle"></span><span class="deck-bottom"><span>Карточек: ' + deck.cards.length + '</span></span>';
       button.querySelector('.deck-title').textContent = deck.title;
       button.querySelector('.deck-subtitle').textContent = deck.subtitle;
       button.addEventListener('click', () => openCard(deck.id, false, button));
@@ -99,7 +98,7 @@
   function setBusy(value) {
     busy = value;
     $('roll-button').disabled = value;
-    $('rules-button').disabled = value;
+    if ($('rules-button')) $('rules-button').disabled = value;
     document.querySelectorAll('.deck').forEach(button => { button.disabled = value; });
     $('board').setAttribute('aria-busy', String(value));
   }
@@ -122,7 +121,6 @@
     $('die').classList.remove('rolling');
     setDie(value);
     $('center-title').textContent = 'Выпало ' + value;
-    $('center-subtitle').textContent = 'Вперёд на ' + value + ' ' + stepWord(value);
     $('roll-button-text').textContent = 'Фишка в пути…';
     $('roll-status').textContent = 'Выпало ' + value + '. Перемещаем фишку.';
     for (let step = 0; step < value; step++) {
@@ -136,7 +134,6 @@
     $('position-label').textContent = state.position ? 'Клетка ' + String(state.position).padStart(2, '0') + ' / 21' : 'На старте';
     $('roll-button-text').textContent = 'Бросить ещё';
     const deck = decks.find(item => item.id === state.cell.type);
-    $('center-subtitle').textContent = deck ? 'Ваша клетка — «' + deck.title + '»' : 'Полный круг! Продолжаем игру.';
     $('roll-status').textContent = deck ? 'Открываем карточку «' + deck.title + '»' : 'Вы на старте. Бросьте кубик ещё раз.';
     await pause(reducedMotion.matches ? 60 : 450);
     if (run !== generation) return;
@@ -153,10 +150,7 @@
     $('card-deck-label').textContent = deck.title + ' / ' + deck.subtitle;
     $('card-counter').textContent = String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
     $('card-type-icon').innerHTML = icon(deck.icon);
-    $('card-origin').textContent = fromBoard ? 'ВАША КЛЕТКА — ' + deck.title.toUpperCase() : 'КАРТОЧКА ИЗ СТОПКИ';
-    $('card-title').textContent = card.title;
     $('card-body').textContent = card.text;
-    $('card-question').textContent = card.question;
     if (!cardDialog.open) {
       returnFocus = trigger || document.activeElement;
       cardDialog.showModal();
@@ -174,7 +168,6 @@
     returnFocus = null;
   });
   rulesDialog.addEventListener('close', syncDialogLock);
-  // Нативный dialog обеспечивает Escape, удержание фокуса и блокировку фона.
   [cardDialog, rulesDialog].forEach(dialog => {
     dialog.addEventListener('click', event => {
       if (event.target !== dialog) return;
@@ -196,28 +189,26 @@
     $('turn-counter').textContent = '01';
     $('position-label').textContent = 'На старте';
     $('center-title').textContent = 'Сделайте первый ход';
-    $('center-subtitle').textContent = 'Ваша фишка — красная. Посмотрим, что выпадет?';
     $('roll-button-text').textContent = 'Бросить кубик';
     $('roll-status').textContent = 'Игра начата заново. Бросьте кубик.';
     $('roll-button').focus();
   }
   $('roll-button').addEventListener('click', rollDice);
-  $('reset-button').addEventListener('click', resetGame);
+  if ($('reset-button')) $('reset-button').addEventListener('click', resetGame);
   $('close-card').addEventListener('click', closeCard);
   $('continue-button').addEventListener('click', closeCard);
   $('next-card').addEventListener('click', () => openCard(currentDeck));
-  $('rules-button').addEventListener('click', () => { if (!busy) { rulesDialog.showModal(); syncDialogLock(); } });
+  if ($('rules-button')) $('rules-button').addEventListener('click', () => { if (!busy) { rulesDialog.showModal(); syncDialogLock(); } });
   $('close-rules').addEventListener('click', () => rulesDialog.close());
   $('start-playing').addEventListener('click', () => { rulesDialog.close(); $('roll-button').focus(); });
   renderBoard();
   renderDecks();
   setDie(3);
-  // Минимальный интерфейс для поддерживающих WebMCP браузеров, без внешних сервисов.
   const modelContext = document.modelContext;
   if (modelContext && typeof modelContext.registerTool === 'function') {
     const lifecycle = new AbortController();
     const register = tool => {
-      try { Promise.resolve(modelContext.registerTool(tool, { signal: lifecycle.signal })).catch(() => {}); } catch {}
+      try { Promise.resolve(modelContext.registerTool(tool, { signal: lifecycle.signal })).catch(() => { }); } catch { }
     };
     window.addEventListener('pagehide', event => { if (!event.persisted) lifecycle.abort(); }, { once: true });
     const result = data => ({ content: [{ type: 'text', text: JSON.stringify(data) }] });
